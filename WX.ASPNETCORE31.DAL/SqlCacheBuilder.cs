@@ -19,6 +19,8 @@ namespace WX.ASPNETCORE31.DAL
         /// <summary>
         /// 泛型类的类型参数T在不同的时候，会产生一个全新的类
         /// 所以，静态字段  静态构造函数 都会重新执行一次
+        /// 缺点：只能跟类型相关，一个类型只能保持一份缓存
+        /// 有点：性能好，无法更新
         /// </summary>
         static SqlCacheBuilder()
         {
@@ -55,5 +57,25 @@ namespace WX.ASPNETCORE31.DAL
     {
         FindOne,
         Insert
+    }
+
+    /// <summary>
+    /// 常规字典缓存  
+    /// 优势：方便，数据保存以Key为准
+    /// 劣势： 数据超过1W以上性能下降
+    /// </summary>
+    internal class CustomCache
+    {
+        private static Dictionary<string, string> CustomCacheDictionary = new Dictionary<string, string>();
+
+        public static void Add(string key ,string value)
+        {
+            CustomCacheDictionary.Add(key, value);
+        }
+
+        public static string Get(string key)
+        {
+            return CustomCacheDictionary[key];
+        }
     }
 }
