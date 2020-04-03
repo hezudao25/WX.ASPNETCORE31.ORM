@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using WX.ASPNETCORE31.Framework;
+using WX.ASPNETCORE31.Framework.Validate;
 
 namespace WX.ASPNETCORE31.Model
 {
@@ -26,19 +27,22 @@ namespace WX.ASPNETCORE31.Model
         /// </summary>
         /// <returns></returns>
         [Description("类型ID")]
+        [WXIntValues(0, 1, 3)]
         public int? LevelId { get; set; }
         /// <summary>
         /// 地区ID
         /// </summary>
         /// <returns></returns>
         [Description("地区ID")]
-        [Column("ParentId")]
+       // [Column("ParentId")]
+       [Base("ParentId")]
         public int? ParentId { get; set; }
         /// <summary>
         /// 状态1启用0停用
         /// </summary>
         /// <returns></returns>
         [Description("状态1启用0停用")]
+        
         public bool? Status { get; set; }
         /// <summary>
         /// 用户名或手机号码
@@ -75,6 +79,7 @@ namespace WX.ASPNETCORE31.Model
         /// </summary>
         /// <returns></returns>
         [Description("性别")]
+        [WXLength(1,4)]
         public string Sex { get; set; }
         /// <summary>
         /// Email
@@ -87,6 +92,7 @@ namespace WX.ASPNETCORE31.Model
         /// </summary>
         /// <returns></returns>
         [Description("手机")]
+        [WXRequire]
         public string Mobile { get; set; }
         /// <summary>
         /// 传真

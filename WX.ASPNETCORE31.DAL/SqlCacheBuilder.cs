@@ -15,6 +15,8 @@ namespace WX.ASPNETCORE31.DAL
     {
         private static string _InsertSql = null;
         private static string _FindOneSql = null;
+        private static string _UpdateSql = null;
+        private static string _DeleteSql = null;
 
         /// <summary>
         /// 泛型类的类型参数T在不同的时候，会产生一个全新的类
@@ -36,8 +38,19 @@ namespace WX.ASPNETCORE31.DAL
 
                 _InsertSql = $"insert into [{type.Name}] ({columnStrings}) values ({valueStrings})";
             }
+            {
+                Type type = typeof(T);
+                string columnStrings = string.Join(",", type.GetPropertiesWithNoKey().Select(p => $"[{p.GetMappingName()}]=@{p.GetMappingName()}"));
+                _UpdateSql = $"update [{type.GetMappingName()}] set {columnStrings} where Id=@id";
+            }
+            {
+                Type type = typeof(T);
+                _DeleteSql = $"Delete from [{type.GetMappingName()}] where Id=@id";
+            }
         }
-
+        /// <summary>
+        /// 负载生产SQL，缓存重用
+        /// </summary>
         public static string GetSql(SqlCacheBuilderType sqlCacheBuilderType)
         {
             switch (sqlCacheBuilderType)
@@ -46,6 +59,10 @@ namespace WX.ASPNETCORE31.DAL
                     return _FindOneSql;
                 case SqlCacheBuilderType.Insert:
                     return _InsertSql;
+                case SqlCacheBuilderType.Update:
+                    return _UpdateSql;
+                case SqlCacheBuilderType.Delete:
+                    return _DeleteSql;
                 default :
                     return _FindOneSql;
             }
@@ -56,7 +73,9 @@ namespace WX.ASPNETCORE31.DAL
     public enum SqlCacheBuilderType
     {
         FindOne,
-        Insert
+        Insert,
+        Update,
+        Delete
     }
 
     /// <summary>

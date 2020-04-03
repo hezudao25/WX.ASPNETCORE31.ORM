@@ -3,12 +3,12 @@ using System.IO;
 
 namespace WX.ASPNETCORE31.Framework
 {
-    public class ConfigurationManager
+    public class ConfigurationManager2
     {
         /// <summary>
         /// 读取appsettings.json配置
         /// </summary>
-        static ConfigurationManager()
+        static ConfigurationManager2()
         {
             var builder = new ConfigurationBuilder()
               .SetBasePath(Directory.GetCurrentDirectory())

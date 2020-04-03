@@ -13,7 +13,7 @@ namespace WX.ASPNETCORE31.Model
     /// </author>
     /// </summary>
     [Description("新房")]
-    [Tabale("Products")]
+    [Base("Products")]
     public class Products : BaseModel
     {        
         /// <summary>
